@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center w-full overflow-hidden space-x-3" v-if="component">
     <div
-        v-for="(product,ind) in component.structure.props.products" :key="ind"
+        v-for="(product,ind) in form.products" :key="ind"
         class="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all transform duration-500">
       <img class="w-64 object-cover rounded-t-md object-cover h-64" :src="product.img"
            alt=""/>
