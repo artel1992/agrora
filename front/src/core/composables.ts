@@ -1,12 +1,18 @@
 import {useCMSStore} from "@/store/cms";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, Ref, ref, watch} from "vue";
 import {EditableComponent, EditableComponentProps, EditFormProps} from "@/core/interfaces";
 import {storeToRefs} from "pinia";
 import {$vfm} from "vue-final-modal";
-import {SliderProps} from "@/core/interfaces/props/slider";
 
+interface EditableComponentContext<T> {
+    form: Ref<T | undefined>,
+    modalOpen: Ref<boolean>
+    modalName: Ref<string>
+    saveForm: (savedForm: T) => void
+    closeEditForm: (defaultForm: T) => void
+}
 
-export function useEditableComponent<T = any>(modal: string, props: Readonly<EditableComponentProps<T>>, emits: any): any {
+export function useEditableComponent<T = any>(modal: string, props: Readonly<EditableComponentProps<T>>, emits: any): EditableComponentContext<T> {
     const {nowEdit} = storeToRefs(useCMSStore())
     const {setNowEdit} = useCMSStore()
     const modalOpen = ref(false)
@@ -21,7 +27,7 @@ export function useEditableComponent<T = any>(modal: string, props: Readonly<Edi
     onMounted(() => {
         form.value = props.component.structure.props
     })
-    const closeEditForm = (defaultForm: EditableComponent<T>['structure']['props']) => {
+    const closeEditForm = (defaultForm: T) => {
         form.value = defaultForm
         setNowEdit(null)
     }

@@ -1,6 +1,11 @@
 <template>
-  <quill-editor v-model:value="value"
+  <div class="max-h-[80vh]">
+    <quill-editor v-model:content="valueTest"
+                toolbar="full"
+                content-type="html"
+                placeholder="..."
   ></quill-editor>
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,13 +17,13 @@ export default {
 import {defineProps, ref, defineEmits, computed} from "vue";
 
 const props = defineProps({
-  modelValue: String
+  value: String
 })
 const toolbar = ref(null)
-const emits = defineEmits(['update:modelValue'])
-const value = computed<string>({
-  get: () => props.modelValue as string,
-  set: () => emits('update:modelValue', value)
+const emits = defineEmits(['update:value'])
+const valueTest = computed<string>({
+  get: () => props.value as string,
+  set: (v) => emits('update:value', v)
 })
 </script>
 <style scoped>

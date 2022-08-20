@@ -4,9 +4,9 @@
       <i class='bx bx-plus px-2 py-1 bg-green-300 rounded-md text-green-800 shadow hover:shadow-md cursor-pointer'
          @click="innerForm.images.push('')"></i>
     </div>
-    <template v-if="innerForm">
-      <div v-for="(img,ind) in innerForm.images" :key="img" class="flex">
-        <input :value="img" class="w-full border border-zinc-400 rounded-l-lg px-1" @input="changeImages($event,ind)"/>
+    <template v-if="innerForm && innerForm.images">
+      <div v-for="(img,ind) in innerForm.images" :key="img" class="flex" >
+        <input class="w-full border border-zinc-400 rounded-l-lg px-1" v-model="innerForm.images[ind]"/>
         <i class='bx bxs-trash-alt px-2 py-1 bg-rose-500 text-rose-200 cursor-pointer rounded-r-lg'
            @click="removeImage(ind)"></i>
       </div>

@@ -12,10 +12,13 @@ import ContentComponent from '@/components/editable-components/content/index.vue
 import RichText from '@/components/RichText.vue';
 import 'boxicons/css/boxicons.min.css';
 import vfmPlugin from 'vue-final-modal';
-import {quillEditor} from 'vue3-quill';
+// import {quillEditor} from 'vue3-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
+import {QuillEditor} from '@vueup/vue-quill'
 
 const app = createApp(App)
-registerComponents(app, [DefaultLayout, HomePage, SliderComponent,
+registerComponents(app, [DefaultLayout, HomePage, SliderComponent, QuillEditor,
     TopProducts, ContentComponent, RichText])
 
-app.use(quillEditor).use(vfmPlugin).use(router).use(createPinia()).mount('#app');
+app.use(vfmPlugin).use(router).use(createPinia()).mount('#app');

@@ -84,7 +84,6 @@ import {SliderProps} from "@/core/interfaces/props/slider";
 import {EditableComponent} from "@/core/interfaces";
 import {useEditableComponent} from "@/core/composables";
 import EditForm from "@/components/editable-components/slider/EditForm.vue";
-import {$vfm} from "vue-final-modal";
 
 const props = defineProps<{ component: EditableComponent<SliderProps> }>()
 const emits = defineEmits<{

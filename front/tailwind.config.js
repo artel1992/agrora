@@ -6,14 +6,11 @@ module.exports = {
     ],
     theme: {
         extend: {},
-        namedGroup: ['home-page', 'slider']
     },
     // safelist: [
     //     {
     //         pattern: /.*?/,
     //     },
     // ],
-    plugins: [
-        require("tailwindcss-named-groups"),
-    ],
+
 }

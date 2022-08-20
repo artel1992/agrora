@@ -1,6 +1,17 @@
 <template>
-  <div>
-    edit form
+  <div v-if="innerForm && innerForm.content" class="bg-white space-y-3 overflow-auto">
+    <rich-text v-model:value="innerForm.content" class="overflow-auto"></rich-text>
+    <div class="space-x-3">
+      <button @click="save"
+              :disabled="!isChanged"
+              class="bg-green-500 px-2 py-1 text-white rounded-md shadow-md hover:shadow-xl font-light transition-shadow  ease-in duration-200  disabled:bg-zinc-400 disabled:text-zinc-300 disabled:hover:shadow-md">
+        Save
+      </button>
+      <button @click="close"
+              class="bg-rose-500 px-2 py-1 text-white rounded-md  shadow-md hover:shadow-xl font-light transition-shadow">
+        Cancel
+      </button>
+    </div>
   </div>
 </template>
 
@@ -10,24 +21,20 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import {defineProps, defineEmits, ref, onMounted} from "vue";
-import {SliderProps} from "@/core/interfaces/props/slider";
+import {defineProps, defineEmits, ref} from "vue";
+import {ContentProps} from "@/core/interfaces/props/content";
+import {useEditForm} from "@/core/composables";
+import RichText from "@/components/RichText.vue";
 
-const props = defineProps<{ form: SliderProps }>()
-const emits = defineEmits(['update:form', 'save', 'close'])
-const innerForm = ref<SliderProps>()
-onMounted(() => {
-  innerForm.value = props.form
-})
-const changeImages = (v: any, ind: number) => {
-  const images = innerForm.value ? innerForm.value?.images : null
-  if (!images)
-    return
-  images[ind] = v.target.value
-}
-const save = () => {
-  emits('update:form', innerForm.value)
-}
+const test = ref('')
+const props = defineProps<{ form: ContentProps }>()
+const emits = defineEmits(['save'])
+const {
+  innerForm,
+  isChanged,
+  save,
+  close
+} = useEditForm<ContentProps>(props, emits)
 </script>
 
 <style scoped>
