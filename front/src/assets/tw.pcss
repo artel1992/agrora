@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .ql-video {
+        @apply block max-w-full;
+    }
+
+    .ql-video.ql-align-center {
+        @apply m-auto;
+    }
+
+    .ql-video.ql-align-right {
+        margin: 0 0 0 auto;
+    }
+
+    .ql-bg-black {
+        @apply bg-black;
+    }
+
+    .ql-bg-red {
+        @apply bg-rose-500;
+    }
+
+    .ql-bg-orange {
+        @apply bg-amber-500;
+    }
+
+    .ql-bg-yellow {
+        @apply bg-yellow-500;
+    }
+
+    .ql-bg-green {
+        @apply bg-green-500;
+    }
+
+    .ql-bg-blue {
+        @apply bg-blue-500;
+    }
+
+    .ql-bg-purple {
+        @apply bg-purple-500;
+    }
+
+    .ql-color-white {
+        @apply text-white;
+    }
+
+    .ql-color-red {
+        @apply text-rose-400;
+    }
+
+    .ql-color-orange {
+        @apply text-amber-400;
+    }
+
+    .ql-color-yellow {
+        @apply text-yellow-400;
+    }
+
+    .ql-color-green {
+        @apply text-green-400;
+    }
+
+    .ql-color-blue {
+        @apply text-blue-400;
+    }
+
+    .ql-color-purple {
+        @apply text-purple-400;
+    }
+
+    .ql-font-serif {
+        font-family: Georgia, Times New Roman, serif;
+    }
+
+    .ql-font-monospace {
+        font-family: Monaco, Courier New, monospace;
+    }
+
+    .ql-size-small {
+        @apply text-xs;
+    }
+
+    .ql-size-large {
+        @apply text-xl;
+    }
+
+    .ql-size-huge {
+        @apply text-2xl;
+    }
+
+    .ql-direction-rtl {
+        direction: rtl;
+        text-align: inherit;
+    }
+
+    .ql-align-center {
+        @apply text-center;
+    }
+
+    .ql-align-justify {
+        @apply text-justify;
+    }
+
+    .ql-align-right {
+        @apply text-right;
+    }
+
+    .ql-blank::before {
+        color: rgba(0, 0, 0, 0.6);
+        content: attr(data-placeholder);
+        font-style: italic;
+        left: 15px;
+        pointer-events: none;
+        position: absolute;
+        right: 15px;
+    }
+
+
+
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
