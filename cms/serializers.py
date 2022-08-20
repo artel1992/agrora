@@ -14,5 +14,4 @@ class ComponentSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'children': {'read_only': True, 'required': False},
             'parent': {'write_only': True, 'required': False},
-            'sequence_number': {'write_only': True, 'required': False},
         }

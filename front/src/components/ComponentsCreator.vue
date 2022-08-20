@@ -8,13 +8,23 @@
                @update:component="emits('update:modelValue',modelValue)"
                class="relative">
       <template v-if="modelValue.children.length > 0">
-        <div v-for="(child,i) in modelValue.children" :key="child.name">
-          <components-creator :model-value="modelValue.children[i]"
-                              @update:modelValue="emits('update:modelValue',modelValue)"></components-creator>
-        </div>
+        <draggable
+            @end="log"
+            v-model="component.children"
+            v-if="component"
+            item-key="name"
+            handle=".bx-move"
+        >
+          <template #item="{ element }">
+            <div>
+              <components-creator :model-value="element"></components-creator>
+            </div>
+          </template>
+        </draggable>
       </template>
     </component>
   </div>
+
 </template>
 
 <script lang="ts">
@@ -23,10 +33,11 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import {defineEmits, defineProps, ref} from "vue";
-import EditToolbarComponent from "@/components/editable-components/EditToolbarComponent.vue";
+import {defineEmits, defineProps, onMounted, ref} from "vue";
 import {EditableComponent} from "@/core/interfaces";
 import {useCMSStore} from "@/store/cms";
+import draggable from "vuedraggable";
+import EditToolbarComponent from "@/components/editable-components/EditToolbarComponent.vue";
 
 const {setNowEdit, saveEditableComponent, deleteEditableComponent} = useCMSStore()
 const hover = ref(false)
@@ -34,6 +45,10 @@ const props = defineProps<{ modelValue: EditableComponent<any> }>()
 const emits = defineEmits<{
   (eventName: 'update:modelValue', value: EditableComponent<any>): void
 }>()
+const component = ref()
+onMounted(() => {
+  component.value = props.modelValue
+})
 const onEdit = () => {
   setNowEdit(props.modelValue)
 }
@@ -42,6 +57,11 @@ const save = () => {
 }
 const deleteComponent = () => {
   deleteEditableComponent(props.modelValue.id)
+}
+
+function log({newIndex, oldIndex}) {
+  component.value.children[newIndex].sequence_number = newIndex
+  component.value.children[oldIndex].sequence_number = oldIndex
 }
 </script>
 <style scoped>
