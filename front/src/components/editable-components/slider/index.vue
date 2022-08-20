@@ -1,9 +1,8 @@
 <template>
   <div class="w-full" v-if="form">
-    <div id="default-carousel" class="relative" data-carousel="static">
+    <div id="default-carousel" class="relative">
       <!-- Carousel wrapper -->
       <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
-
         <div class="duration-700 ease-in-out" v-for="(image,ind) in form.images" :key="ind"
              :class="{'hidden':currentImageIndex !== ind}">
           <span
@@ -76,25 +75,17 @@ const emits = defineEmits<{
   (eventName: 'update:component', form: EditableComponent<SliderProps>): void
 }>()
 
-const {modalName, closeEditForm, modalOpen, form} = useEditableComponent<SliderProps>('edit-slider', props)
+const {
+  modalName,
+  modalOpen,
+  form,
+  saveForm
+} = useEditableComponent<SliderProps>('edit-slider', props, emits)
 const currentImageIndex = ref(0)
 
-function log(v: any) {
-  console.log(v.close())
-}
 
-onMounted(() => {
-  form.value = props.component.structure.props
-})
 
-const saveForm = (form: SliderProps) => {
-  const {component} = props
-  closeEditForm(form)
-  emits('update:component', {
-    ...component,
-    structure: {...component.structure, props: form}
-  } as EditableComponent<SliderProps>)
-}
+
 const toPrevImage = () => {
   if (currentImageIndex.value === 0) {
     currentImageIndex.value = props.component.structure.props.images.length - 1

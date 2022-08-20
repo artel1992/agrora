@@ -33,15 +33,17 @@ export default {
 <script setup lang="ts">
 import {defineProps, defineEmits, ref, onMounted, computed} from "vue";
 import {SliderProps} from "@/core/interfaces/props/slider";
+import {useEditForm} from "@/core/composables";
 
 const props = defineProps<{ form: SliderProps }>()
 const emits = defineEmits(['save'])
-const innerForm = ref<SliderProps>()
-const defaultForm = JSON.stringify(props.form)
-const isChanged = computed(() => defaultForm !== JSON.stringify(innerForm.value))
-onMounted(() => {
-  innerForm.value = props.form
-})
+
+const {
+  innerForm,
+  isChanged,
+  save,
+  close
+} = useEditForm<SliderProps>(props, emits)
 
 const changeImages = (v: any, ind: number) => {
   if (!innerForm.value?.images)
@@ -52,13 +54,6 @@ const removeImage = (ind: number) => {
   if (!innerForm.value?.images)
     return
   innerForm.value.images.splice(ind, 1)
-}
-const save = () => {
-  emits('save', innerForm.value)
-}
-const close = () => {
-  innerForm.value = JSON.parse(defaultForm)
-  save()
 }
 </script>
 

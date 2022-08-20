@@ -20,3 +20,7 @@ export interface EditableComponent<T> {
 export interface EditableComponentProps<T> {
     component: EditableComponent<T>
 }
+
+export interface EditFormProps<T> {
+    form: EditableComponent<T>['structure']['props']
+}

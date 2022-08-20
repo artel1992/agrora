@@ -3,7 +3,7 @@
     <div
         v-for="(product,ind) in component.structure.props.products" :key="ind"
         class="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all transform duration-500">
-      <img class="w-64 object-cover rounded-t-md" :src="product.img"
+      <img class="w-64 object-cover rounded-t-md object-cover h-64" :src="product.img"
            alt=""/>
       <div class="mt-4">
         <h1 class="text-2xl font-bold text-gray-700">{{ product.title }}</h1>
@@ -32,6 +32,16 @@
       </div>
     </div>
   </div>
+  <vue-final-modal :name="modalName"
+                   v-model="modalOpen"
+                   :click-to-close="false"
+                   :min-width="0"
+                   :min-height="0"
+                   classes="flex justify-center items-center"
+                   :max-height="100">
+    <edit-form v-if="form" @save="saveForm"
+               :form="form"></edit-form>
+  </vue-final-modal>
 </template>
 
 <script lang="ts">
@@ -40,11 +50,22 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import {defineProps} from "vue";
+import EditForm from "@/components/editable-components/top-products/EditForm.vue";
+import {defineEmits, defineProps} from "vue";
 import {EditableComponent} from "@/core/interfaces";
 import {TopProductsProps} from "@/core/interfaces/props/top-products";
+import {useEditableComponent} from "@/core/composables";
 
 const props = defineProps<{ component: EditableComponent<TopProductsProps> }>()
+const emits = defineEmits<{
+  (eventName: 'update:component', form: EditableComponent<TopProductsProps>): void
+}>()
+const {
+  modalName,
+  saveForm,
+  modalOpen,
+  form
+} = useEditableComponent<TopProductsProps>('edit-top-products', props, emits)
 </script>
 <style scoped>
 
