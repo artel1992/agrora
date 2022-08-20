@@ -3,7 +3,7 @@
     <div v-if="!move">
       <i class='bx bxs-edit-alt action-icon' @click="emits('edit')"></i>
       <i class='bx bxs-save action-icon' @click="emits('save')"></i>
-      <i class='bx bx-plus action-icon' @click="emits('add')"></i>
+<!--      <i class='bx bx-plus action-icon' @click="emits('add')"></i>-->
       <i class='bx bxs-trash-alt action-icon' @click="emits('delete')"></i>
       <i class='bx bx-move  action-icon' @click="onMove"></i>
     </div>
