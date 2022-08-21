@@ -11,4 +11,7 @@ pipenv shell or .\venv\Scripts\activate
 pipenv install or pip install -r .\requirements.txt
 cd .\front
 npm i
+cd ..
+pipenv run migrations or python manage.py makemigrations
+pipenv run migrate or python manage.py migrate
 ```
