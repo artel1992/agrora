@@ -20,6 +20,7 @@
         >
           <template #item="{ element }">
             <div>
+
               <components-creator :model-value="element"
                                   @update:model-value="(comp)=>$emit('update:modelValue',comp)"></components-creator>
             </div>
