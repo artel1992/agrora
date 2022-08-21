@@ -26,9 +26,10 @@
         </draggable>
       </template>
     </component>
-    <div class=" text-center text-blue-500 cursor-pointer
-    hover:opacity-100 hover:h-auto
-    overflow-hidden h-[3px] opacity-0">
+    <div class=" text-center text-blue-500 cursor-pointer transition-[max-height] duration-500 transition-opacity
+    hover:opacity-100 hover:max-h-screen
+    overflow-hidden max-h-2 opacity-0"
+         v-if="component && component.structure.config&& component.structure.config.has_children">
       <i class='bx bxs-layer-plus block' @click="loadEmptyComponents"></i>
       <div v-for="comp in emptyComponents" :key="comp.name" @click="addComponents(comp)">
         {{ comp.name }}

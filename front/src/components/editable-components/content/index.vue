@@ -1,5 +1,6 @@
 <template>
   <div v-if="form" v-html="form.content" ></div>
+  <div v-if="form && form.content===''" class="w-full h-20 text-center bg-rose-50 text-rose-500">Empty {{modalName}}</div>
   <vue-final-modal :name="modalName"
                    v-model="modalOpen"
                    :click-to-close="false"

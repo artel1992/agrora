@@ -1,5 +1,8 @@
 <template>
   <div class="flex justify-center flex-wrap space-y-3 items-center w-full overflow-hidden space-x-3" v-if="form">
+    <div class="min-h-40 bg-rose-50 text-red-400 w-full text-center" v-if="form.products.length===0">
+      Empty
+    </div>
     <div
         v-for="(product,ind) in form.products" :key="ind"
         class="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all transform duration-500">
@@ -32,6 +35,7 @@
       </div>
     </div>
   </div>
+
   <vue-final-modal :name="modalName"
                    v-model="modalOpen"
                    :click-to-close="false"

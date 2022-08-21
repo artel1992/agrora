@@ -2,9 +2,15 @@ import {ComponentPropsOptions} from "@vue/runtime-core";
 
 declare type ClassType = { [key: string]: boolean } | string[]
 
+export interface ComponentConfig {
+    editable: boolean
+    has_children: boolean
+}
+
 export interface Structure<T> {
     classes: ClassType
     props: T
+    config: ComponentConfig
 }
 
 export interface EditableComponent<T> {

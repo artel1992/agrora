@@ -1,5 +1,5 @@
 <template>
-  <div v-if="innerForm && innerForm.content" class="bg-white space-y-3 overflow-auto">
+  <div v-if="innerForm" class="bg-white space-y-3 overflow-auto">
     <rich-text v-model:value="innerForm.content" class="overflow-auto"></rich-text>
     <div class="space-x-3">
       <button @click="save"

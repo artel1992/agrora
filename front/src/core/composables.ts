@@ -1,5 +1,5 @@
 import {useCMSStore} from "@/store/cms";
-import {computed, onMounted, Ref, ref, watch} from "vue";
+import {computed, onMounted, Ref, ref, watch, getCurrentInstance} from "vue";
 import {EditableComponent, EditableComponentProps, EditFormProps} from "@/core/interfaces";
 import {storeToRefs} from "pinia";
 import {$vfm} from "vue-final-modal";
@@ -26,6 +26,8 @@ export function useEditableComponent<T = any>(modal: string, props: Readonly<Edi
     })
     onMounted(() => {
         form.value = props.component.structure.props
+        const component = getCurrentInstance()
+        modalName.value += component ? component.uid : ''
     })
     const closeEditForm = (defaultForm: T) => {
         form.value = defaultForm
