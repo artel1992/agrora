@@ -1,21 +1,17 @@
-from typing import Dict
+from dataclasses import asdict
+from typing import Optional
 
-from django.db.models import Manager, Model
-
-
-def create_tree(instance, serializer_class):
-    if isinstance(instance, Manager):
-        return serializer_class(instance.all(), many=True).data
-        # tree = {}
-        # for item in instance.iterator():
-        #     tree[item.id] = serializer_class(item).data
-        #     return tree
-    else:
-        return serializer_class(instance).data
+from cms.services.components.slider import SliderStructure, SliderProps, SliderComponent
+from cms.services.layouts.default import DefaultLayoutComponent
+from cms.services.structures import ComponentConfig
 
 
-def deconstruct_tree(value: Dict, model: Model):
-    # result = []
-    # for (ind, child) in value.items():
-    #     result.append(model.objects.get(id=ind))
-    return None
+def get_empty_components_list(level: Optional[str]):
+    return list(
+        filter(lambda x: x.level == level if level is not None else True,
+               [
+                   asdict(SliderComponent()),
+                   asdict(DefaultLayoutComponent()),
+               ],
+               )
+    )

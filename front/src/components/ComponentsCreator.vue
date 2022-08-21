@@ -1,7 +1,10 @@
 <template>
-  <div class="relative" :class="{active:hover}" @mouseenter="hover=true" @mouseleave="hover=false">
+  <div
+      class="relative" ref="container"
+      @mouseenter="showMe" @mouseleave="hover=false">
     <transition name="fade">
-      <edit-toolbar-component v-if="hover" @edit="onEdit" @save="save"></edit-toolbar-component>
+      <edit-toolbar-component v-if="hover" @edit="onEdit" @save="save"
+                              @delete="deleteComponent"></edit-toolbar-component>
     </transition>
     <component :is="modelValue.name" :class="modelValue.structure.classes"
                :component="modelValue"
@@ -23,6 +26,14 @@
         </draggable>
       </template>
     </component>
+    <div class=" text-center text-blue-500 cursor-pointer
+    hover:opacity-100 hover:h-auto
+    overflow-hidden h-[3px] opacity-0">
+      <i class='bx bxs-layer-plus block' @click="loadEmptyComponents"></i>
+      <div v-for="comp in emptyComponents" :key="comp.name" @click="addComponents(comp)">
+        {{ comp.name }}
+      </div>
+    </div>
   </div>
 
 </template>
@@ -39,16 +50,23 @@ import {useCMSStore} from "@/store/cms";
 import draggable from "vuedraggable";
 import EditToolbarComponent from "@/components/editable-components/EditToolbarComponent.vue";
 
-const {setNowEdit, saveEditableComponent, deleteEditableComponent} = useCMSStore()
+const container = ref(null)
+const {setNowEdit, saveEditableComponent, deleteEditableComponent, createComponent, getEmptyComponents} = useCMSStore()
 const hover = ref(false)
 const props = defineProps<{ modelValue: EditableComponent<any> }>()
 const emits = defineEmits<{
   (eventName: 'update:modelValue', value: EditableComponent<any>): void
 }>()
 const component = ref()
+const emptyComponents = ref([])
 onMounted(() => {
   component.value = props.modelValue
 })
+const showMe = (ent: any) => {
+  if (container.value === ent.target)
+    ent.target.classList.add('active')
+  hover.value = true
+}
 const onEdit = () => {
   setNowEdit(props.modelValue)
 }
@@ -57,6 +75,13 @@ const save = () => {
 }
 const deleteComponent = () => {
   deleteEditableComponent(props.modelValue.id)
+}
+const loadEmptyComponents = async () => {
+  emptyComponents.value = (await getEmptyComponents())
+}
+const addComponents = async (comp: EditableComponent<any>) => {
+  component.value.children.push((await createComponent({...comp, parent: component.value.id})))
+
 }
 
 function log({newIndex, oldIndex}) {

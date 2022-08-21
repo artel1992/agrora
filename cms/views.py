@@ -4,6 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from cms.models import Component
 from cms.serializers import ComponentSerializer
+from cms.services import get_empty_components_list
 
 
 class ComponentsViewSet(ModelViewSet):
@@ -23,3 +24,9 @@ class ComponentsViewSet(ModelViewSet):
         except Component.DoesNotExist:
             component = Component.objects.get(path='/', parent__isnull=True)
         return Response(self.get_serializer(component).data)
+
+    @action(methods=['get'], detail=False,
+            url_path='empty_components')
+    def empty_components(self, *args, **kwargs):
+        data = get_empty_components_list(kwargs.get('level'))
+        return Response(data)

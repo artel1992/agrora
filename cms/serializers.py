@@ -1,17 +1,16 @@
 from rest_framework import serializers
 from cms.models import Component
-from cms.services.fields import PickledField, RecursiveField
+from cms.services.fields import RecursiveField, JSONDataClassField
 from cms.services.structures import ComponentStructure
 
 
 class ComponentSerializer(serializers.ModelSerializer):
-    structure = PickledField(structure_class=ComponentStructure)
-    children = RecursiveField(required=False, many=True)
+    structure = serializers.JSONField()
+    children = RecursiveField(many=True, read_only=True)
 
     class Meta:
         model = Component
-        fields = ('id', 'name', 'structure', 'path', 'children', 'parent', 'sequence_number')
+        fields = ('id', 'name', 'structure', 'path', 'children', 'parent', 'sequence_number', 'level')
         extra_kwargs = {
-            'children': {'read_only': True, 'required': False},
             'parent': {'write_only': True, 'required': False},
         }

@@ -2,26 +2,20 @@ import pickle
 from dataclasses import dataclass, asdict
 
 from django.db.models import Manager
-from rest_framework.serializers import Field
+from rest_framework.serializers import Field, JSONField
 
-from cms.services import create_tree, deconstruct_tree
 from cms.services.structures import ComponentStructure
 
 
-class PickledField(Field):
+class JSONDataClassField(Field):
     structure_class = ComponentStructure
-
-    def to_representation(self, value: ComponentStructure):
-        if value:
-            return asdict(value)
-        return None
 
     def to_internal_value(self, data):
         return self.structure_class(**data)
 
     def __init__(self, structure_class, *args, **kwargs):
         self.structure_class = structure_class
-        super(PickledField, self).__init__(*args, **kwargs)
+        super(JSONDataClassField, self).__init__(*args, **kwargs)
 
 
 class RecursiveField(Field):
@@ -33,9 +27,8 @@ class RecursiveField(Field):
             return serializer_class(value).data
 
     def to_internal_value(self, value):
-        return None
+        return [1, 2, 3]
 
     def __init__(self, many: bool = False, *args, **kwargs):
         self.many = many
-        kwargs.setdefault('read_only', True)
         super(RecursiveField, self).__init__(*args, **kwargs)

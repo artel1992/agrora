@@ -1,16 +1,9 @@
 <template>
   <div class="editor">
-    <div v-if="!move">
-      <i class='bx bxs-edit-alt action-icon' @click="emits('edit')"></i>
-      <i class='bx bxs-save action-icon' @click="emits('save')"></i>
-      <!--      <i class='bx bx-plus action-icon' @click="emits('add')"></i>-->
-      <i class='bx bxs-trash-alt action-icon' @click="emits('delete')"></i>
-      <i class='bx bx-move action-icon' @click="onMove"></i>
-    </div>
-    <div v-else>
-      <i class='bx bxs-save action-icon'></i>
-      <i class='bx bx-x action-icon' @click="move=false"></i>
-    </div>
+    <i class='bx bxs-edit-alt action-icon' @click="emits('edit')"></i>
+    <i class='bx bxs-save action-icon' @click="emits('save')"></i>
+    <i class='bx bxs-trash-alt action-icon' @click="emits('delete')"></i>
+    <i class='bx bx-move action-icon'></i>
   </div>
 </template>
 
@@ -24,7 +17,6 @@ import {useCMSStore} from "@/store/cms";
 import {ref, defineEmits} from "vue";
 
 
-const move = ref(false)
 const emits = defineEmits<{
   (eventName: 'edit'): void
 
@@ -37,10 +29,6 @@ const emits = defineEmits<{
   (eventName: 'move'): void
 }>()
 const store = useCMSStore();
-const onMove = () => {
-  emits('move')
-  move.value = true
-}
 </script>
 
 <style scoped>
