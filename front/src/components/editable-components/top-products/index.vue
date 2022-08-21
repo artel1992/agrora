@@ -53,15 +53,16 @@
                    :min-height="0"
                    classes="flex justify-center items-center"
                    :max-height="100">
-    <config-form v-if="component"
-                 :title="component.title"
-                 @update:title="(title)=>$emit('update:component',{...component,title})"
-                 :classes="classes"
-                 @update:classes="changeClasses"
-    ></config-form>
+    <template #default="{close}">
+      <config-form v-if="component"
+                   :title="component.title"
+                   @update:title="(title)=>$emit('update:component',{...component,title})"
+                   :classes="classes"
+
+                   @update:classes="(cls)=>changeClasses(cls,close)"
+      ></config-form>
+    </template>
   </vue-final-modal>
-  {{ classes }}1 <br> <br><br>
-  {{ component.structure }}1
 </template>
 
 <script lang="ts">
@@ -90,10 +91,11 @@ const {
   form,
   classes
 } = useEditableComponent<TopProductsProps>('edit-top-products', 'conf-top-products', props, emits)
-const changeClasses = (newClasses: EditableComponent<TopProductsProps>['structure']['classes']) => {
-  console.log(newClasses)
+const changeClasses = (newClasses: EditableComponent<TopProductsProps>['structure']['classes'], cb: CallableFunction) => {
   classes.value = newClasses
+  modalConfOpen.value = false
   emits('update:component', {...props.component, structure: {...props.component.structure, classes: classes.value}})
+  cb()
 }
 </script>
 <style scoped>

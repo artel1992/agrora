@@ -13,8 +13,6 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import {EditableComponent} from "@/core/interfaces";
-import {TopProductsProps} from "@/core/interfaces/props/top-products";
 import {defineProps, defineEmits} from "vue";
 
 const props = defineProps(['title', 'classes'])

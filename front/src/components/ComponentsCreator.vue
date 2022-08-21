@@ -6,28 +6,29 @@
       <edit-toolbar-component v-if="hover" @edit="onEdit" @save="save" @config="modalConf=true"
                               @delete="deleteComponent"></edit-toolbar-component>
     </transition>
-    <component :is="modelValue.name" :class="modelValue.structure.classes"
-               :component="modelValue" :modal-conf="modalConf" :modal-edit="modalEdit"
-               @update:component="test"
-               class="relative">
-      <template v-if="modelValue.children.length > 0">
-        <draggable
-            @end="endDrag"
-            v-model="component.children"
-            v-if="component"
-            item-key="name"
-            handle=".bx-move"
-        >
-          <template #item="{ element }">
-            <div>
-
-              <components-creator :model-value="element"
-                                  @update:model-value="(comp)=>$emit('update:modelValue',comp)"></components-creator>
-            </div>
-          </template>
-        </draggable>
-      </template>
-    </component>
+    <div :class="modelValue.structure.classes">
+      <component :is="modelValue.name"
+                 :component="modelValue" :modal-conf="modalConf" :modal-edit="modalEdit"
+                 @update:component="(comp)=>$emit('update:modelValue',comp)"
+                 class="relative component">
+        <template v-if="modelValue.children.length > 0">
+          <draggable
+              @end="endDrag"
+              v-model="component.children"
+              v-if="component"
+              item-key="name"
+              handle=".bx-move"
+          >
+            <template #item="{ element,index }">
+              <div>
+                <components-creator :model-value="element"
+                                    @update:model-value="(comp)=>updateChild(comp,index)"></components-creator>
+              </div>
+            </template>
+          </draggable>
+        </template>
+      </component>
+    </div>
 
     <div class="text-center text-blue-500 cursor-pointer transition-[max-height] duration-500 transition-opacity
     hover:opacity-100 hover:max-h-screen
@@ -89,9 +90,9 @@ const addComponents = async (comp: EditableComponent<any>) => {
   component.value.children.push((await createComponent({...comp, parent: component.value.id})))
 
 }
-const test = (comp: EditableComponent<any>) => {
-  console.log(comp)
-  emits('update:modelValue', comp)
+const updateChild = (newComp: EditableComponent<any>, ind: number) => {
+  (component.value).children[ind] = newComp
+  emits('update:modelValue', component.value)
 }
 
 function endDrag({newIndex, oldIndex}: { newIndex: number, oldIndex: number }) {
