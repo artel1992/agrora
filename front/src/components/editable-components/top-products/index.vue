@@ -36,8 +36,8 @@
     </div>
   </div>
 
-  <vue-final-modal :name="modalName"
-                   v-model="modalOpen"
+  <vue-final-modal :name="modalEditName"
+                   v-model="modalEditOpen"
                    :click-to-close="false"
                    :min-width="0"
                    :min-height="0"
@@ -46,6 +46,22 @@
     <edit-form v-if="form" @save="saveForm"
                :form="form"></edit-form>
   </vue-final-modal>
+  <vue-final-modal :name="modalConfName"
+                   v-model="modalConfOpen"
+                   :click-to-close="false"
+                   :min-width="0"
+                   :min-height="0"
+                   classes="flex justify-center items-center"
+                   :max-height="100">
+    <config-form v-if="component"
+                 :title="component.title"
+                 @update:title="(title)=>$emit('update:component',{...component,title})"
+                 :classes="classes"
+                 @update:classes="changeClasses"
+    ></config-form>
+  </vue-final-modal>
+  {{ classes }}1 <br> <br><br>
+  {{ component.structure }}1
 </template>
 
 <script lang="ts">
@@ -55,21 +71,30 @@ export default {
 </script>
 <script setup lang="ts">
 import EditForm from "@/components/editable-components/top-products/EditForm.vue";
+import ConfigForm from "@/components/editable-components/top-products/ConfigForm.vue";
 import {defineEmits, defineProps} from "vue";
 import {EditableComponent} from "@/core/interfaces";
 import {TopProductsProps} from "@/core/interfaces/props/top-products";
 import {useEditableComponent} from "@/core/composables";
 
-const props = defineProps<{ component: EditableComponent<TopProductsProps> }>()
+const props = defineProps<{ component: EditableComponent<TopProductsProps>, modalEdit: boolean, modalConf: boolean }>()
 const emits = defineEmits<{
   (eventName: 'update:component', form: EditableComponent<TopProductsProps>): void
 }>()
 const {
-  modalName,
+  modalEditName,
   saveForm,
-  modalOpen,
-  form
-} = useEditableComponent<TopProductsProps>('edit-top-products', props, emits)
+  modalEditOpen,
+  modalConfName,
+  modalConfOpen,
+  form,
+  classes
+} = useEditableComponent<TopProductsProps>('edit-top-products', 'conf-top-products', props, emits)
+const changeClasses = (newClasses: EditableComponent<TopProductsProps>['structure']['classes']) => {
+  console.log(newClasses)
+  classes.value = newClasses
+  emits('update:component', {...props.component, structure: {...props.component.structure, classes: classes.value}})
+}
 </script>
 <style scoped>
 

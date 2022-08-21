@@ -16,6 +16,7 @@ class Levels(Enum):
 class ComponentConfig:
     editable: bool = True
     has_children: bool = True
+    deletable: bool = True
 
 
 @dataclass
@@ -30,6 +31,7 @@ class ComponentStructure:
 class Component:
     name: str
     structure: ComponentStructure
+    title: str = ''
     parent: Optional[int] = None
     path: Optional[str] = None
     sequence_number: int = 0

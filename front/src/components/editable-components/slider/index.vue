@@ -1,5 +1,6 @@
 <template>
   <div class="w-full" v-if="form">
+    <h3>{{ component.title }}</h3>
     <div id="default-carousel" class="relative">
       <!-- Carousel wrapper -->
       <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
@@ -97,8 +98,6 @@ const {
   saveForm
 } = useEditableComponent<SliderProps>('edit-slider', props, emits)
 const currentImageIndex = ref(0)
-
-
 
 
 const toPrevImage = () => {

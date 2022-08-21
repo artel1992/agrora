@@ -1,6 +1,6 @@
 import {ComponentPropsOptions} from "@vue/runtime-core";
 
-declare type ClassType = { [key: string]: boolean } | string[]
+export declare type ClassType = { [key: string]: boolean }
 
 export interface ComponentConfig {
     editable: boolean
@@ -16,6 +16,7 @@ export interface Structure<T> {
 export interface EditableComponent<T> {
     id: number
     name: string
+    title: string
     parent?: number
     structure: Structure<T>
     path: string
@@ -25,6 +26,8 @@ export interface EditableComponent<T> {
 
 export interface EditableComponentProps<T> {
     component: EditableComponent<T>
+    modalEdit: boolean
+    modalConf: boolean
 }
 
 export interface EditFormProps<T> {

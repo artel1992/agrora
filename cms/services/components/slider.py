@@ -6,7 +6,7 @@ from cms.services.structures import ComponentStructure, Component, ComponentConf
 
 @dataclass
 class SliderConfig(ComponentConfig):
-    has_children = False
+    has_children: bool = False
 
 
 @dataclass
@@ -19,7 +19,7 @@ class SliderProps:
 class SliderStructure(ComponentStructure):
     props: SliderProps = SliderProps()
     config: ComponentConfig = SliderConfig()
-    level: str   = Levels.layout.value
+    level: str = Levels.layout.value
 
 
 @dataclass

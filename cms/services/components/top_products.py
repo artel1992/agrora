@@ -6,7 +6,7 @@ from cms.services.structures import ComponentStructure, Component, ComponentConf
 
 @dataclass
 class TopProductsConfig(ComponentConfig):
-    has_children = False
+    has_children: bool = False
 
 
 @dataclass

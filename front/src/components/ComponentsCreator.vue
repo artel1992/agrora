@@ -3,16 +3,16 @@
       class="relative" ref="container"
       @mouseenter="showMe" @mouseleave="hover=false">
     <transition name="fade">
-      <edit-toolbar-component v-if="hover" @edit="onEdit" @save="save"
+      <edit-toolbar-component v-if="hover" @edit="onEdit" @save="save" @config="modalConf=true"
                               @delete="deleteComponent"></edit-toolbar-component>
     </transition>
     <component :is="modelValue.name" :class="modelValue.structure.classes"
-               :component="modelValue"
-               @update:component="emits('update:modelValue',modelValue)"
+               :component="modelValue" :modal-conf="modalConf" :modal-edit="modalEdit"
+               @update:component="test"
                class="relative">
       <template v-if="modelValue.children.length > 0">
         <draggable
-            @end="log"
+            @end="endDrag"
             v-model="component.children"
             v-if="component"
             item-key="name"
@@ -20,13 +20,15 @@
         >
           <template #item="{ element }">
             <div>
-              <components-creator :model-value="element"></components-creator>
+              <components-creator :model-value="element"
+                                  @update:model-value="(comp)=>$emit('update:modelValue',comp)"></components-creator>
             </div>
           </template>
         </draggable>
       </template>
     </component>
-    <div class=" text-center text-blue-500 cursor-pointer transition-[max-height] duration-500 transition-opacity
+
+    <div class="text-center text-blue-500 cursor-pointer transition-[max-height] duration-500 transition-opacity
     hover:opacity-100 hover:max-h-screen
     overflow-hidden max-h-2 opacity-0"
          v-if="component && component.structure.config&& component.structure.config.has_children">
@@ -63,6 +65,8 @@ const emptyComponents = ref([])
 onMounted(() => {
   component.value = props.modelValue
 })
+const modalEdit = ref(false)
+const modalConf = ref(false)
 const showMe = (ent: any) => {
   if (container.value === ent.target)
     ent.target.classList.add('active')
@@ -84,8 +88,12 @@ const addComponents = async (comp: EditableComponent<any>) => {
   component.value.children.push((await createComponent({...comp, parent: component.value.id})))
 
 }
+const test = (comp: EditableComponent<any>) => {
+  console.log(comp)
+  emits('update:modelValue', comp)
+}
 
-function log({newIndex, oldIndex}) {
+function endDrag({newIndex, oldIndex}: { newIndex: number, oldIndex: number }) {
   component.value.children[newIndex].sequence_number = newIndex
   component.value.children[oldIndex].sequence_number = oldIndex
 }

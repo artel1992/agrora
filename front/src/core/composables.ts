@@ -6,32 +6,51 @@ import {$vfm} from "vue-final-modal";
 
 interface EditableComponentContext<T> {
     form: Ref<T | undefined>,
-    modalOpen: Ref<boolean>
-    modalName: Ref<string>
+    classes: Ref<EditableComponent<T>['structure']['classes']>
+    modalEditOpen: Ref<boolean>
+    modalEditName: Ref<string>
+    modalConfName: Ref<string>
+    modalConfOpen: Ref<boolean>
     saveForm: (savedForm: T) => void
     closeEditForm: (defaultForm: T) => void
 }
 
-export function useEditableComponent<T = any>(modal: string, props: Readonly<EditableComponentProps<T>>, emits: any): EditableComponentContext<T> {
+export function useEditableComponent<T = any>(modalEdit: string, modalConf: string, props: Readonly<EditableComponentProps<T>>, emits: any): EditableComponentContext<T> {
     const {nowEdit} = storeToRefs(useCMSStore())
     const {setNowEdit} = useCMSStore()
-    const modalOpen = ref(false)
-    const modalName = ref(modal)
+    const modalEditOpen = ref(false)
+    const modalEditName = ref(modalEdit)
+    const modalConfName = ref(modalConf)
+    const modalConfOpen = ref(false)
     const form = ref<T>()
+    const classes = ref<EditableComponent<T>['structure']['classes']>({})
     watch(nowEdit, (value) => {
         if (value && value.id === props.component.id)
-            $vfm.show(modalName.value)
+            $vfm.show(modalEditName.value)
         if (value === null)
-            $vfm.hide(modalName.value)
+            $vfm.hide(modalEditName.value)
+    })
+    watch((): boolean => props.modalEdit, (value) => {
+        modalEditOpen.value = value
+    })
+    watch((): boolean => props.modalConf, (value) => {
+        modalConfOpen.value = value
     })
     onMounted(() => {
-        form.value = props.component.structure.props
+        if (props.component) {
+            form.value = props.component.structure.props
+            classes.value = props.component.structure.classes
+        }
         const component = getCurrentInstance()
-        modalName.value += component ? component.uid : ''
+        modalEditName.value += component ? `-${component.uid}` : ''
+        modalConfName.value += component ? `-${component.uid}` : ''
     })
     const closeEditForm = (defaultForm: T) => {
         form.value = defaultForm
         setNowEdit(null)
+    }
+    const changeClass = (className: string) => {
+        // form.value.classes = {}
     }
     const saveForm = (savedForm: T) => {
         const {component} = props
@@ -42,9 +61,12 @@ export function useEditableComponent<T = any>(modal: string, props: Readonly<Edi
         } as EditableComponent<T>)
     }
     return {
-        modalOpen,
+        modalEditOpen,
         form,
-        modalName,
+        modalEditName,
+        modalConfName,
+        modalConfOpen,
+        classes,
         saveForm,
         closeEditForm
     }

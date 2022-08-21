@@ -21,8 +21,11 @@ export const useCMSStore = defineStore<'cmsStore', CMSState>('cmsStore', {
             this.nowEdit = component
             return 1
         },
-        async getPage<T>(path: string): Promise<EditableComponent<T>> {
-            return axios.get('components/by_page/', {params: {path}}).then(response => response.data)
+        async getComponents<T>(path: string): Promise<EditableComponent<T>> {
+            return axios.get<EditableComponent<T>>('components/by_page/', {params: {path}}).then(response => response.data)
+        },
+        async getPages<T>(): Promise<EditableComponent<T>> {
+            return axios.get<EditableComponent<T>>('components/pages/').then(response => response.data)
         },
         async createComponent<T = any>(comp: EditableComponent<T>): Promise<EditableComponent<T>> {
             return axios.post('components/', comp).then(response => response.data)
@@ -34,7 +37,7 @@ export const useCMSStore = defineStore<'cmsStore', CMSState>('cmsStore', {
             return axios.delete(`components/${id}/`).then(response => response.data)
         },
         async getEmptyComponents<T>(level?: string): Promise<EditableComponent<T>> {
-            return axios.get('components/empty_components/', {params: {level}}).then(response => response.data)
+            return axios.get('components/empty/', {params: {level}}).then(response => response.data)
         },
     }
 })
