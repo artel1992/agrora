@@ -1,9 +1,14 @@
-Компаненты могут получать данные из бека.
-Адаптив
-Навести марафет
-черновик
-встривоемые scripts
-title ля компанентов
-количество товаров
-микроразметка
-сео
+### Создание окружения
+```console
+python -m pip install pipenv or
+python -m pip install --user virtualenv
+python -m venv venv
+```
+
+### Запуск проекта
+```console
+pipenv shell or .\venv\Scripts\activate
+pipenv install or pip install -r .\requirements.txt
+cd .\front
+npm i
+```

@@ -5,11 +5,9 @@ name = "pypi"
 
 [packages]
 django = "*"
-graph-wrap = "*"
-redis = "*"
 psycopg2-binary = "*"
-django-picklefield = "*"
 django-cors-headers = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

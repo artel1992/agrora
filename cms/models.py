@@ -1,5 +1,4 @@
 from django.db import models
-from picklefield import PickledObjectField
 
 from cms.services.structures import Levels
 
